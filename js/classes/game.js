@@ -8,6 +8,8 @@ class Game {
 	constructor() {
 		this.towers = []
 		this.paths = []
+		/** @type {Line} */
+		this.line
 	}
 
 	draw () {
@@ -23,6 +25,9 @@ class Game {
 		for (let i in this.towers) {
 			this.towers[ i ].draw()
 		}
+
+		// Draw the line
+		if (this.line) this.line.draw()
 	}
 
 	update () {
@@ -38,6 +43,10 @@ class Game {
 		let temp = tower1.paths.find(p => p == tower2.id)
 		if (temp) return
 		this.paths.push(new Path(tower1, tower2))
+	}
+
+	addLine (x, y, color) {
+		this.line = new Line(x, y, color)
 	}
 
 	/**

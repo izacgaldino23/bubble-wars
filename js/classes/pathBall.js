@@ -1,3 +1,5 @@
+const sizeVariation = 3
+
 class PathBall {
 	constructor(x, y, color, path, angle, i, forceAnim) {
 		this.pos = createVector(x, y)
@@ -24,6 +26,8 @@ class PathBall {
 
 		this.id = pathBallID
 		pathBallID++
+
+		this.r = random(circlePathSize - sizeVariation, circlePathSize + sizeVariation)
 	}
 
 	draw () {
@@ -32,10 +36,13 @@ class PathBall {
 			return
 		}
 
-		noStroke()
-		fill(this.color)
+		// noStroke()
+		// fill(this.color)
+		noFill()
+		strokeWeight(2)
+		stroke(this.color)
 
-		circle(this.pos.x, this.pos.y, circlePathSize + this.plusPulse)
+		circle(this.pos.x, this.pos.y, this.r + this.plusPulse)
 
 		this.update()
 	}

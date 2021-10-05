@@ -41,14 +41,6 @@ class Tower {
 		// fill(this.color)
 		// circle(this.pos.x, this.pos.y, this.diameter)
 
-		// =============== Power
-		// strokeWeight(2)
-		// stroke(0, 150)
-		noStroke()
-		textStyle(BOLD)
-		fill(this.color)
-		text(this.power, this.pos.x, this.pos.y)
-
 		// =============== Shape
 		strokeWeight(3)
 		noFill() // fill(this.color)
@@ -62,6 +54,14 @@ class Tower {
 		}
 
 		endShape(CLOSE)
+
+		// =============== Power
+		// strokeWeight(2)
+		// stroke(0, 150)
+		noStroke()
+		textStyle(BOLD)
+		fill(this.borderColor)
+		text(this.power, this.pos.x, this.pos.y)
 
 		this.update()
 	}

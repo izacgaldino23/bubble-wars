@@ -63,7 +63,10 @@ function mousePressed () {
 
 	if (temp) {
 		temp.selected = true
+		game.addLine(temp.pos.x, temp.pos.y, temp.color)
 		selected = temp
+	} else {
+		game.addLine(mouseX, mouseY, color(255, 150))
 	}
 }
 
@@ -77,7 +80,10 @@ function mouseReleased () {
 
 		selected.selected = false
 		selected = undefined
+	} else {
+		game.line.destruct()
 	}
+	game.line = null
 }
 
 // =================================

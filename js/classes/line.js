@@ -62,9 +62,11 @@ class Line {
 		return interPos
 	}
 
-	destruct () {
+	destruct (myTeam) {
 		let paths = []
 		for (let i in game.paths) {
+			if (myTeam != game.paths[ i ].tower1.team) continue // Se não for do meu team deve pular
+
 			let pos = this.intersect(game.paths[ i ].pointT1.x, game.paths[ i ].pointT1.y, game.paths[ i ].pointT2.x, game.paths[ i ].pointT2.y)
 			if (pos) {
 				paths.push(i)
@@ -72,8 +74,19 @@ class Line {
 		}
 
 		if (paths.length > 0) {
-			for (let i in paths) {
-				game.paths.splice(i, 1)
+			for (let i = paths.length - 1; i >= 0; i--) {
+				let tower1ID = game.paths[ paths[ i ] ].tower1.id
+				let tower2ID = game.paths[ paths[ i ] ].tower2.id
+
+				// remover vinculo da tower2 com a tower1
+				let index = game.paths[ paths[ i ] ].tower1.paths.indexOf(tower2ID)
+				game.paths[ paths[ i ] ].tower1.paths.splice(index, 1)
+
+				// remover vinculo da tower1 com a tower2
+				index = game.paths[ paths[ i ] ].tower1.paths.indexOf(tower1ID)
+				game.paths[ paths[ i ] ].tower2.paths.splice(index, 1)
+
+				game.paths.splice(paths[ i ], 1)
 			}
 		}
 	}

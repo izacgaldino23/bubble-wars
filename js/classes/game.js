@@ -5,11 +5,12 @@ class Game {
 	/** @type {Array<Path>} */
 	paths
 
-	constructor() {
+	constructor(myTeam) {
 		this.towers = []
 		this.paths = []
 		/** @type {Line} */
 		this.line
+		this.myTeam = myTeam
 	}
 
 	draw () {
@@ -40,7 +41,7 @@ class Game {
 	}
 
 	addPath (tower1, tower2) {
-		let temp = tower1.paths.find(p => p == tower2.id)
+		let temp = tower1.relations.find(p => p == tower2.id)
 		if (temp) return
 		this.paths.push(new Path(tower1, tower2))
 	}
@@ -57,7 +58,12 @@ class Game {
 		return this.towers.find(t => dist(mouseX, mouseY, t.pos.x, t.pos.y) <= t.r)
 	}
 
-	findTower (id) {
-
+	/**
+	 * 
+	 * @param {number} id 
+	 * @returns {Path}
+	 */
+	findPath (id) {
+		return this.paths.find(p => p.id == id)
 	}
 }

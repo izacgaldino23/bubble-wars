@@ -1,3 +1,5 @@
+let pathID = 1
+
 class Path {
 	/** @type {Array<PathBall>} */
 	balls
@@ -14,8 +16,8 @@ class Path {
 		this.angleT1 = atan2(this.tower2.pos.y - this.tower1.pos.y, this.tower2.pos.x - this.tower1.pos.x)
 		this.angleT2 = atan2(this.tower1.pos.y - this.tower2.pos.y, this.tower1.pos.x - this.tower2.pos.x)
 
-		this.pointT1 = createVector(this.tower1.pos.x + (this.tower1.r + circlePathSize * 1.5) * cos(this.angleT1), this.tower1.pos.y + (this.tower1.r + circlePathSize * 1.5) * sin(this.angleT1))
-		this.pointT2 = createVector(this.tower2.pos.x + (this.tower2.r + circlePathSize * 1.5) * cos(this.angleT2), this.tower2.pos.y + (this.tower2.r + circlePathSize * 1.5) * sin(this.angleT2))
+		this.pointT1 = createVector(this.tower1.pos.x + (this.tower1.r + circlePathSize * 1.2) * cos(this.angleT1), this.tower1.pos.y + (this.tower1.r + circlePathSize * 1.2) * sin(this.angleT1))
+		this.pointT2 = createVector(this.tower2.pos.x + (this.tower2.r + circlePathSize * 1.2) * cos(this.angleT2), this.tower2.pos.y + (this.tower2.r + circlePathSize * 1.2) * sin(this.angleT2))
 
 		let middleX = (this.pointT1.x + this.pointT2.x) / 2
 		let middleY = (this.pointT1.y + this.pointT2.y) / 2
@@ -25,8 +27,13 @@ class Path {
 
 		this.steps = floor(this.size / (circlePathSize * 1.5))
 
-		tower1.paths.push(tower2.id)
-		tower2.paths.push(tower1.id)
+		this.id = pathID
+		pathID++
+
+		tower1.relations.push(tower2.id)
+		tower2.relations.push(tower1.id)
+
+		tower1.paths.push(this.id)
 
 		this.generateBalls()
 	}
@@ -62,6 +69,7 @@ class Path {
 				atan2(this.tower2.pos.y - this.tower1.pos.y, this.tower2.pos.x - this.tower1.pos.x),
 				i * 4,
 				(m <= 0.5 ? m : 0.5 - (m - 0.5)) / 0.5,
+				i == this.steps, // is last?
 			)
 
 			if (i == middle) {
@@ -73,5 +81,9 @@ class Path {
 
 			this.balls.push(temp)
 		}
+	}
+
+	pulse () {
+		this.balls[ 0 ].pulse(0)
 	}
 }

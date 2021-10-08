@@ -1,12 +1,18 @@
 const sizeVariation = 3
+const maxAnim = 50
+const circlePathSize = 15
 
 class PathBall {
-	constructor(x, y, color, path, angle, i, forceAnim) {
+	/** @type {Path} */
+	path
+
+	constructor(x, y, color, path, angle, i, forceAnim, last) {
 		this.pos = createVector(x, y)
 		this.color = color
 		this.path = path
 		this.center = false
 		this.fixed = false
+		this.last = last
 
 		this.angle = angle + PI / 2
 
@@ -17,7 +23,7 @@ class PathBall {
 		this.delay = i
 		this.alpha = 0
 
-		this.pulseFrame = floor(map(forceAnim, 0, 1, pulseBall + 1, maxAnim))
+		this.pulseFrame = floor(map(forceAnim, 0, 1, sizeVariation + 1, maxAnim))
 		this.plusPulse = 0
 		this.pulsing = false
 
@@ -48,20 +54,30 @@ class PathBall {
 	}
 
 	update () {
-		if (this.frame >= maxAnim && this.up) {
+		if (this.frame >= maxAnim) {
 			this.up = false
-			this.direction = -1
-		} else if (this.frame <= 0 && !this.up) {
+		} else if (this.frame <= 0) {
 			this.up = true
-			this.direction = 1
 		}
 
-		this.pulsing = this.frame <= pulseBall
-		this.plusPulse += (this.pulsing ? 1 : -1)
-		if (this.plusPulse < 0) this.plusPulse = 0
+		if (this.pulsing) {
+			this.plusPulse++
 
-		this.frame += this.direction
-		this.pulseFrame += this.direction
+			if (this.plusPulse >= sizeVariation) {
+				this.pulsing = false
+				let qtdBalls = this.path.balls.length
+
+				if (this.me + 1 < qtdBalls) {
+					this.path.balls[ this.me + 1 ].pulse(this.me + 1)
+				} else if (this.last) {
+					this.path.tower2.power--
+				}
+			}
+		} else if (this.plusPulse > 0) {
+			this.plusPulse--
+		}
+
+		this.frame += this.up ? 1 : -1
 
 		if (this.alpha < 255) {
 			this.alpha += 10
@@ -72,5 +88,10 @@ class PathBall {
 			if (this.up) this.pos.add(this.posAnim1)
 			else this.pos.sub(this.posAnim1)
 		}
+	}
+
+	pulse (me) {
+		this.pulsing = true
+		this.me = me
 	}
 }

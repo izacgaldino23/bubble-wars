@@ -21,8 +21,9 @@ class Tower {
 
 		this.id = torreID
 
-		this.paths = []
+		this.relations = []
 		this.points = []
+		this.paths = []
 
 		this.diameter = 60 + this.power / 3
 		this.r = this.diameter / 2
@@ -43,7 +44,7 @@ class Tower {
 
 		// =============== Shape
 		strokeWeight(3)
-		noFill() // fill(this.color)
+		fill(28) // noFill()
 		stroke(this.selected ? this.color : this.borderColor)
 
 		beginShape()
@@ -82,6 +83,12 @@ class Tower {
 		if (this.tick >= prod[ this.tier ]) {
 			this.tick = 0
 			if (this.power < this.max) this.power++
+
+			// Adicionar pulso nos paths
+			for (let p of this.paths) {
+				let path = game.findPath(p)
+				path.pulse()
+			}
 		} else this.tick++
 	}
 

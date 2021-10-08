@@ -15,10 +15,6 @@ const prod = [ 100, 80, 60 ] // Ticker de produção por tier
 
 const towerTransparent = false
 
-const circlePathSize = 15
-const maxAnim = 50
-const pulseBall = 3
-
 const test_scene = {
 	towers: [
 		{ team: TEAM_3, tier: TIER_1, power: 8, pos: { x: 100, y: 100 } },
@@ -34,7 +30,6 @@ let centerX, centerY
 /** @type {Tower} */
 let selected
 let torreID = 1
-let pathID = 1
 let pathBallID = 1
 
 // ===============================
@@ -47,7 +42,7 @@ function setup () {
 	centerX = width / 2
 	centerY = height / 2
 
-	game = new Game()
+	game = new Game(TEAM_1)
 
 	loadScene(test_scene)
 }
@@ -61,7 +56,7 @@ function draw () {
 function mousePressed () {
 	let temp = game.getTower()
 
-	if (temp) {
+	if (temp) {// && game.myTeam == temp.team) {
 		temp.selected = true
 		game.addLine(temp.pos.x, temp.pos.y, temp.color)
 		selected = temp
@@ -81,7 +76,7 @@ function mouseReleased () {
 		selected.selected = false
 		selected = undefined
 	} else {
-		game.line.destruct()
+		game.line.destruct(game.myTeam)
 	}
 	game.line = null
 }

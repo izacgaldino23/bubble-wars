@@ -10,14 +10,14 @@ class Tower {
 		this.borderColor = lerpColor(this.color, color(0), .5)
 
 		this.selected = false
-
-		this.max = 60
+		this.live = true
 
 		this.tick = 0
 
 		this.tier = tier
 		this.team = team
 		this.power = power
+		this.max = maxs[ this.tier ]
 
 		this.id = torreID
 
@@ -80,15 +80,15 @@ class Tower {
 			else if (this.points[ i ] > this.maxSizeVariation) this.points[ i ] = this.maxSizeVariation
 		}
 
-		if (this.tick >= prod[ this.tier ]) {
-			this.tick = 0
-			if (this.power < this.max) this.power++
+		if (this.tick == prod[ this.tier ] / 2) {
+			this.pulse()
+		}
 
-			// Adicionar pulso nos paths
-			for (let p of this.paths) {
-				let path = game.findPath(p)
-				path.pulse()
-			}
+		if (this.tick >= prod[ this.tier ] && this.live) {
+			this.tick = 0
+			this.addPower(this)
+
+			this.pulse()
 		} else this.tick++
 	}
 
@@ -96,5 +96,42 @@ class Tower {
 		if (dist(this.pos.x, this.pos.y, x, y) < r + this.r / 2) return true
 
 		return false
+	}
+
+	pulse () {
+		// Adicionar pulso nos paths
+		for (let p of this.paths) {
+			let path = game.findPath(p)
+			path.pulse()
+		}
+	}
+
+	/**
+	 * 
+	 * @param {number} value 
+	 * @param {Tower} tower 
+	 */
+	addPower (tower) {
+		if (this.power <= this.max) this.power += tower.team == this.team ? 1 : -1
+		if (this.power <= 0 && tower) {
+			if (this.power < 0) this.power = 0
+			this.changeTeam(tower.team)
+		}
+	}
+
+
+	changeTeam (team) {
+		this.team = team
+		this.color = color(colors[ team ])
+		this.borderColor = lerpColor(this.color, color(0), .5)
+	}
+
+	removePath (id) {
+		for (let i = 0; i < this.paths.length; i++) {
+			if (this.paths[ i ] == id) {
+				this.paths.splice(i, 1)
+				break
+			}
+		}
 	}
 }

@@ -18,9 +18,10 @@ const towerTransparent = false
 const test_scene = {
 	towers: [
 		{ team: TEAM_3, tier: TIER_1, power: 8, pos: { x: 100, y: 100 } },
+		{ team: TEAM_3, tier: TIER_1, power: 8, pos: { x: 250, y: 150 } },
 		{ team: TEAM_1, tier: TIER_2, power: 25, pos: { x: 300, y: 400 } },
 		{ team: TEAM_2, tier: TIER_3, power: 80, pos: { x: 500, y: 300 } },
-		{ team: TEAM_4, tier: TIER_2, power: 120, pos: { x: 300, y: 600 } },
+		{ team: TEAM_4, tier: TIER_3, power: 120, pos: { x: 300, y: 600 } },
 	]
 }
 

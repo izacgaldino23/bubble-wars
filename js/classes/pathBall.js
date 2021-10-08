@@ -70,7 +70,8 @@ class PathBall {
 				if (this.me + 1 < qtdBalls) {
 					this.path.balls[ this.me + 1 ].pulse(this.me + 1)
 				} else if (this.last) {
-					this.path.tower2.power--
+					this.path.tower2.addPower(this.path.tower1)
+					console.log()
 				}
 			}
 		} else if (this.plusPulse > 0) {

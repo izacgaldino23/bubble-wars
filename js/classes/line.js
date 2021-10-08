@@ -63,6 +63,7 @@ class Line {
 	}
 
 	destruct (myTeam) {
+		/** @type {Array<number>} */
 		let paths = []
 		for (let i in game.paths) {
 			if (myTeam != game.paths[ i ].tower1.team) continue // Se não for do meu team deve pular
@@ -79,12 +80,15 @@ class Line {
 				let tower2ID = game.paths[ paths[ i ] ].tower2.id
 
 				// remover vinculo da tower2 com a tower1
-				let index = game.paths[ paths[ i ] ].tower1.paths.indexOf(tower2ID)
-				game.paths[ paths[ i ] ].tower1.paths.splice(index, 1)
+				let index = game.paths[ paths[ i ] ].tower1.relations.indexOf(tower2ID)
+				game.paths[ paths[ i ] ].tower1.relations.splice(index, 1)
 
 				// remover vinculo da tower1 com a tower2
-				index = game.paths[ paths[ i ] ].tower1.paths.indexOf(tower1ID)
-				game.paths[ paths[ i ] ].tower2.paths.splice(index, 1)
+				index = game.paths[ paths[ i ] ].tower1.relations.indexOf(tower1ID)
+				game.paths[ paths[ i ] ].tower2.relations.splice(index, 1)
+
+				index = game.paths[ paths[ i ] ].tower1.paths.indexOf(paths[ i ])
+				game.paths[ paths[ i ] ].tower1.paths.splice(index, 1)
 
 				game.paths.splice(paths[ i ], 1)
 			}

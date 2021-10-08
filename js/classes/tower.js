@@ -124,6 +124,10 @@ class Tower {
 		this.team = team
 		this.color = color(colors[ team ])
 		this.borderColor = lerpColor(this.color, color(0), .5)
+
+		for (let id of this.paths) {
+			game.findPath(id).changeBallsColors()
+		}
 	}
 
 	removePath (id) {

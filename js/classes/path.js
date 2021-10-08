@@ -63,7 +63,6 @@ class Path {
 			let temp = new PathBall(
 				x,
 				y,
-				// color(colors[ this.tower1.team ]),
 				newColor,
 				this,
 				atan2(this.tower2.pos.y - this.tower1.pos.y, this.tower2.pos.x - this.tower1.pos.x),
@@ -85,5 +84,13 @@ class Path {
 
 	pulse () {
 		this.balls[ 0 ].pulse(0)
+	}
+
+	changeBallsColors () {
+		for (let i = 0; i <= this.steps; i++) {
+			let m = map(i, 0, this.steps, 0, 1)
+
+			this.balls[ i ].color = lerpColor(this.tower1.borderColor, this.tower1.color, m)
+		}
 	}
 }
